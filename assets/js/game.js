@@ -83,6 +83,10 @@ var fight = function(enemyName) {
 
 // fight each enemy-bot by looping over them in an array and fighting them one at a time
 for (var i = 0; i < enemyNames.length; i++) {
+  var pickedEnemyName = enemyNames[i];
+  enemyHealth = 50;
+  fight(pickedEnemyName);
+}
   // if player is still alive, keep fighting
   if(playerHealth > 0) {
     // let player know which round they are in. Add 1 to array index number
@@ -104,4 +108,3 @@ for (var i = 0; i < enemyNames.length; i++) {
   else {
     window.alert("You have lost your robot in battle! Game Over!");
   }
-}
