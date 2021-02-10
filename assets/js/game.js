@@ -127,4 +127,5 @@ if (playerHealth > 0) {
 // if player is dead, stop game
 else {
   window.alert("You have lost your robot in battle! Game Over!");
+  break;
 }
