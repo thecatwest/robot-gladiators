@@ -1,60 +1,3 @@
-var enemyNames = ["Bender Bending Ridriguez", "Flexo", "Femputer"];
-var enemyHealth = 50;
-var enemyAttack = 12;
-
-// function to generate a random numeric value
-var randomNumber = function(min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
-
-  return value;
-};
-
-var playerInfo = {
-  health: 100,
-  attack: 10,
-  money: 10,
-  reset: function() {
-    this.health = 100;
-    this.attack = 10;
-    this.money = 10;
-  },
-  refillHealth: function() {
-    if (this.money >= 7) {
-      alert("Refilling player's health by 20 for 7 dollars.");
-      this.health += 20;
-      this.money -= 7;
-    }
-    else {
-      alert("You don't have enough money!");
-    }
-  },
-  upgradeAttack: function() {
-    if (this.money >= 7); {
-    alert("Upgrading player's attack by 6 for 7 dollars.");
-      this.attack +=6;
-      this.money =- 7;
-    }
-    else {
-      alert("You don't have enough money!");
-    }
-  }
-};
-
-var enemyInfo = [
-  {
-    name: "Bender Bending Ridriguez",
-    attack: randomNumber(10, 14)
-  },
-  {
-    name:"Flexo",
-    attack: randomNumber(10, 14)
-  },
-  {
-    name:"Femputer",
-    attack: randomNumber(10, 14)
-  }
-];
-
 // function to start a new game
 var startGame = function() {
   // reset player stats
@@ -135,7 +78,13 @@ var fight = function(enemy) {
 
     enemy.health = Math.max(0, enemy.health - damage);
     console.log(
-      `${playerInfo.name} attacked ${enemy.name}, ${enemy.name} now has ${enemy.health} health remaining.`
+      `${playerInfo.name} 
+      attacked 
+      ${enemy.name}, 
+      ${enemy.name} 
+      now has 
+      ${enemy.health} 
+      health remaining.`
     );
       
     // check enemy's health
@@ -164,7 +113,13 @@ var fight = function(enemy) {
     
     playerInfo.health = Math.max(0, playerInfo.health - damage);
     console.log(
-      `${enemy.name} attacked ${playerInfo.name}, ${playerInfo.name} now has ${playerInfo.health} health remaining.`
+      `${enemy.name} 
+      attacked 
+      ${playerInfo.name}, 
+      ${playerInfo.name} 
+      now has 
+      ${playerInfo.health} 
+      health remaining.`
       );
 
     // check player's health
@@ -209,5 +164,83 @@ var shop = function() {
   }
 };
 
-// start the game when the page loads
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
+};
+/* END GAME FUNCTIONS */
+
+/* GAME INFORMATION / VARIABLES */
+
+// function to set name
+var getPlayerName = function() {
+  var name = "";
+
+  while (name === "" || name === null) {
+    name = prompt("What is your robot's name?");
+  }
+
+  console.log(`Your robot's name is ${name}`);
+  return name;
+};
+
+// player information
+var playerInfo = {
+  name: getPlayerName(),
+  health: 100,
+  attack: 10,
+  money: 10,
+  reset: function() {
+    this.health = 100;
+    this.attack = 10;
+    this.money = 10;
+  },
+  refillHealth: function() {
+    if (this.money >= 7) {
+      alert("Refilling player's health by 20 for 7 dollars.");
+      this.health += 20;
+      this.money -= 7;
+    }
+    else {
+      alert("You don't have enough money!");
+    }
+  },
+  upgradeAttack: function() {
+    if (this.money >= 7) {
+    alert("Upgrading player's attack by 6 for 7 dollars.");
+      this.attack +=6;
+      this.money =- 7;
+    }
+    else {
+      alert("You don't have enough money!");
+    }
+  }
+};
+
+// enemy information
+var enemyInfo = [
+  {
+    name: "Bender Bending Ridriguez",
+    attack: randomNumber(10, 14)
+  },
+  {
+    name:"Flexo",
+    attack: randomNumber(10, 14)
+  },
+  {
+    name:"Femputer",
+    attack: randomNumber(10, 14)
+  }
+];
+
+console.log(enemyInfo);
+console.log(enemyInfo[0]);
+console.log(enemyInfo[0].name);
+console.log(enemyInfo[0]["attack"]);
+
+/* END GAME INFORMATION / VARIABLES */
+
+/* RUN GAME */
 startGame();
