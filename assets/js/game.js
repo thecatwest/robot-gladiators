@@ -1,3 +1,5 @@
+console.log("Things aren't working...");
+
 // function to start a new game
 var startGame = function() {
   // reset player stats
@@ -161,24 +163,21 @@ var fight = function(enemy) {
 var shop = function() {
   // ask player what they'd like to do
   var shopOptionPrompt = prompt(
-    `Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one, "REFILL", "UPGRADE", or "LEAVE".`
+    `Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE.`
     );
+
+  // convert string to integer
+  shopOptionPrompt = parseInt(shopOptionPrompt);
 
   // use switch case to carry out action
   switch (shopOptionPrompt) {
-    case "refill":
-    case "REFILL":
-    case "Refill":
+    case 1:
       playerInfo.refillHealth();
       break;
-    case "upgrade":
-    case "UPGRADE":
-    case "Upgrade":
+    case 2:
       playerInfo.upgradeAttack();
       break;
-    case "leave":
-    case "LEAVE":
-    case "Leave":
+    case 3:
       alert("Leaving the store.");
       break;
     default:
