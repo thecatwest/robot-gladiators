@@ -15,19 +15,32 @@ var startGame = function() {
       // pick new enemy to fight based on index of enemyNames array
       var pickedEnemyObj = enemyInfo[i];
 
-      // reset enemy.health before starting new fight
+      // set health for picked enemy
       pickedEnemyObj.health = randomNumber(40, 60);
 
-      // pass the pickedEnemyName variable's value into the fight funtion, where it will assume the enemyName parameter value
+      console.log(pickedEnemyObj);
+
+      // pass the pickedEnemyObj object variable's value into the fight function, where it will assume the value of the enemy parameter
       fight(pickedEnemyObj);
+
+      // if player is still alive after the fight and we're not at the last enemy in the array
+      if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
+        // ask if player wants to use the store before next round
+        var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+
+        // if yes, take them to the store() function
+        if (storeConfirm) {
+          shop();
+        }
+      }
     }
-    // if player is not alive, break out of loop and let endGame function run
+    // if player is not alive, break out of the loop and let endGame function run
     else {
       break;
-    } 
+    }
   }
 
-  // play again
+  // after loop ends, we are either out of player.health or enemies to fight, so run the endGame function
   endGame();
 };
 
@@ -35,11 +48,17 @@ var startGame = function() {
 var endGame = function() {
   alert("The game has now ended. Let's see how you did!");
 
-  // if we're not at the last enemy in the array
-  if (playerInfo.health > 0) {
-    alert(`Great job, you've survived the game! You now have a score of ${playerInfo.money}.`);
+  // check localStorage for high score, if it's not there, use 0
+  var highScore = localStorage.getItem("highscore") || 0;
+
+  // if player have more money than the high score, player has new high score
+  if (playerInfo.money > highScore) {
+    localStorage.setItem("highscore", playerInfo.money);
+    localStorage.setItem("name", playerInfo.name);
+
+    alert(`${playerInfo.name} now has the high score of ${playerInfo.money}!`);
   } else {
-    alert("You've lost your robot in battle!");
+    alert(`${playerInfo.name} did not beat the high score of ${highScore}. Maybe next time!`);
   }
 
   // ask player if they'd like to play again
@@ -52,6 +71,7 @@ var endGame = function() {
   }
 };
 
+// fight or skip function
 var fightOrSkip = function() {
   // Prompt the player to 'fight' or 'skip' battle
   var promptFight = prompt("Would you like to FIGHT or SKIP this battle? Enter 'Fight' or 'SKIP' to choose.");
@@ -93,12 +113,10 @@ var fightOrSkip = function() {
 var fight = function(enemy) {
   // keep track of who goes first
   var isPlayerTurn = true;
-​
   // randomly change turn order
   if (Math.random() > 0.5) {
     isPlayerTurn = false;
   }
-​
   while (playerInfo.health > 0 && enemy.health > 0) {
     if (isPlayerTurn) {
       // ask player if they'd like to fight or skip using fightOrSkip function
@@ -106,9 +124,7 @@ var fight = function(enemy) {
         // if true, leave fight by breaking loop
         break;
       }
-​
       var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-​
       // remove enemy's health by subtracting the amount we set in the damage variable
       enemy.health = Math.max(0, enemy.health - damage);
       console.log(
@@ -121,14 +137,11 @@ var fight = function(enemy) {
           enemy.health +
           " health remaining."
       );
-​
       // check enemy's health
       if (enemy.health <= 0) {
         window.alert(enemy.name + " has died!");
-​
         // award player money for winning
         playerInfo.money = playerInfo.money + 20;
-​
         // leave while() loop since enemy is dead
         break;
       } else {
@@ -137,7 +150,6 @@ var fight = function(enemy) {
       // player gets attacked first
     } else {
       var damage = randomNumber(enemy.attack - 3, enemy.attack);
-​
       // remove player's health by subtracting the amount we set in the damage variable
       playerInfo.health = Math.max(0, playerInfo.health - damage);
       console.log(
@@ -150,7 +162,6 @@ var fight = function(enemy) {
           playerInfo.health +
           " health remaining."
       );
-​
       // check player's health
       if (playerInfo.health <= 0) {
         window.alert(playerInfo.name + " has died!");
@@ -171,6 +182,12 @@ var shop = function() {
   var shopOptionPrompt = prompt(
     `Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE.`
     );
+
+  // check if prompt answer was left blank, player hit "cancel", or provided a number instead
+  if (shopOptionPrompt === null || shopOptionPrompt === "" || isNaN(shopOptionPrompt)) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return shop();
+  }
 
   // convert string to integer
   shopOptionPrompt = parseInt(shopOptionPrompt);
